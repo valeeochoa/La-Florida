@@ -1,0 +1,14 @@
+# Node modules
+node_modules/
+
+# Electron build
+/dist/
+/out/
+/build/
+
+# VSCode settings
+.vscode/
+
+# Environment
+.env
+.DS_Store
