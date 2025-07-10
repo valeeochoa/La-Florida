@@ -1,14 +1,41 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Camping La Florida</title>
-  <link rel="stylesheet" href="style.css"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Camping La Florida - UNSL</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Control de Ingresos y Egresos</h1>
-  <div id="contenido"></div>
+  <div class="container">
+    <header>
+      <h1>Camping La Florida</h1>
+      <h2>Universidad Nacional de San Luis</h2>
+    </header>
+
+    <nav class="tabs">
+      <button class="tab active">Ingreso</button>
+      <button class="tab">Egreso</button>
+      <button class="tab">Estadísticas</button>
+    </nav>
+
+    <div class="options">
+      <button class="option active">Alumno</button>
+      <button class="option">Particular</button>
+      <button class="option">Vehículo</button>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="search-section">
+      <h3>Ingrese el dni del ALUMNO</h3>
+      <div class="search-box">
+        <input type="text" id="dniInput" placeholder="Número de DNI">
+        <button id="searchButton">BUSCAR</button>
+      </div>
+    </div>
+  </div>
+
   <script src="app.js"></script>
 </body>
 </html>
