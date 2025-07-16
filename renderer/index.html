@@ -2,9 +2,19 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <!-- Política de Seguridad actualizada para Electron -->
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self' 'unsafe-inline';
+    style-src 'self' 'unsafe-inline';
+    img-src 'self' data:;
+    font-src 'self';
+    connect-src 'self';
+  ">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Camping La Florida - UNSL</title>
-  <link rel="stylesheet" href="style.css">
+  <!-- Ruta corregida para CSS -->
+  <link rel="stylesheet" href="./style.css">
 </head>
 <body>
   <div class="container">
@@ -14,28 +24,36 @@
     </header>
 
     <nav class="tabs">
-      <button class="tab active">Ingreso</button>
-      <button class="tab">Egreso</button>
-      <button class="tab">Estadísticas</button>
+      <button class="tab active" data-tab="ingreso">Ingreso</button>
+      <button class="tab" data-tab="egreso">Egreso</button>
+      <button class="tab" data-tab="estadisticas">Estadísticas</button>
     </nav>
 
     <div class="options">
-      <button class="option active">Alumno</button>
-      <button class="option">Particular</button>
-      <button class="option">Vehículo</button>
+      <button class="option active" data-option="alumno">Alumno</button>
+      <button class="option" data-option="particular">Particular</button>
+      <button class="option" data-option="vehiculo">Vehículo</button>
     </div>
 
     <div class="divider"></div>
 
     <div class="search-section">
-      <h3>Ingrese el dni del ALUMNO</h3>
+      <h3 id="searchTitle">Ingrese el DNI del ALUMNO</h3>
       <div class="search-box">
-        <input type="text" id="dniInput" placeholder="Número de DNI">
+        <input type="text" id="dniInput" placeholder="Número de DNI" autocomplete="off">
         <button id="searchButton">BUSCAR</button>
       </div>
+      <!-- Contenedor para mensajes -->
+      <div id="messageContainer"></div>
+    </div>
+
+    <!-- Sección de resultados mejorada -->
+    <div class="result-section" id="resultSection">
+      <div id="resultContent"></div>
     </div>
   </div>
 
-  <script src="app.js"></script>
+  <!-- Script al final del body para mejor rendimiento -->
+  <script src="./app.js"></script>
 </body>
 </html>

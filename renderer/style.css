@@ -1,4 +1,236 @@
+/* Estilos base mejorados */
 body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 20px;
+  background-color: #f0f2f5;
+  color: #333;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 25px;
+  background-color: white;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+/* Header actualizado */
+header {
+  text-align: center;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+header h1 {
+  color: #2c3e50;
+  margin: 0;
+  font-size: 2.2em;
+}
+
+header h2 {
+  color: #7f8c8d;
+  font-size: 1.1em;
+  margin-top: 5px;
+  font-weight: normal;
+}
+
+/* Componentes interactivos mejorados */
+.tabs {
+  display: flex;
+  margin-bottom: 25px;
+  border-bottom: 2px solid #eaeaea;
+}
+
+.tab {
+  padding: 12px 25px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.tab.active {
+  color: #3498db;
+  font-weight: bold;
+}
+
+.tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: #3498db;
+}
+
+.options {
+  display: flex;
+  margin-bottom: 25px;
+  gap: 10px;
+}
+
+.option {
+  padding: 10px 20px;
+  background-color: #f8f9fa;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.option.active {
+  background-color: #3498db;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Sección de búsqueda mejorada */
+.search-section {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+}
+
+.search-box {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+#dniInput {
+  padding: 12px 15px;
+  flex-grow: 1;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+#searchButton {
+  padding: 12px 25px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+#searchButton:hover {
+  background-color: #2980b9;
+}
+
+/* Resultados y mensajes - Adaptado a la nueva estructura */
+#resultSection {
+  margin-top: 30px;
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  display: none; /* Oculto por defecto */
+}
+
+.persona-card, .vehiculo-card {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  border-left: 4px solid #3498db;
+}
+
+.vehiculo-card {
+  border-left-color: #2ecc71;
+}
+
+.details {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.details p {
+  margin: 0;
+  padding: 8px 12px;
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Mensajes de error/éxito mejorados */
+#messageContainer {
+  min-height: 50px;
+  margin-top: 15px;
+}
+
+.mensaje {
+  padding: 12px 20px;
+  margin: 10px 0;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mensaje.error {
+  background-color: #ffebee;
+  color: #c62828;
+  border-left: 4px solid #ef5350;
+}
+
+.mensaje.info {
+  background-color: #e3f2fd;
+  color: #1565c0;
+  border-left: 4px solid #42a5f5;
+}
+
+#reload-btn {
+  padding: 6px 12px;
+  background: transparent;
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+/* Efectos y transiciones */
+.tab:hover, .option:hover {
+  transform: translateY(-1px);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+  }
+  
+  .tabs, .options {
+    flex-wrap: wrap;
+  }
+  
+  .tab {
+    padding: 10px 15px;
+  }
+  
+  .search-box {
+    flex-direction: column;
+  }
+  
+  #dniInput {
+    width: 100%;
+  }
+}
+/*body {
   font-family: 'Arial', sans-serif;
   margin: 0;
   padding: 0;
@@ -112,7 +344,7 @@ header h2 {
   background-color: #2980b9;
 }
 
-/* Estilos para resultados y mensajes */
+// Estilos para resultados y mensajes 
 .resultados-container {
   margin-top: 20px;
   padding: 15px;
@@ -163,3 +395,20 @@ header h2 {
   border-radius: 4px;
   border-left: 4px solid #4caf50;
 }
+
+.result-section {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f5f5f5;
+  border-radius: 5px;
+}
+
+.student-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.student-info p {
+  margin: 5px 0;
+}*/

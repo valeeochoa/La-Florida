@@ -1,14 +1,53 @@
-# Node modules
-node_modules/
+### Entorno ###
+.env                # Variables de entorno
+.env.local          # Variables locales (override)
+.env.*.local        # Entornos específicos
+.DS_Store           # Archivos de macOS
+Thumbs.db           # Archivos de Windows
 
-# Electron build
-/dist/
-/out/
-/build/
+### Dependencias ###
+node_modules/       # Dependencias de Node
+jspm_packages/      # Paquetes JSPM
+.pnpm-debug.log     # Logs de PNPM
 
-# VSCode settings
-.vscode/
+### Electron ###
+/dist/              # Builds de producción
+/out/               # Builds de desarrollo
+/build/             # Archivos compilados
+release-builds/     # Binarios empaquetados
+*.exe               # Ejecutables Windows
+*.dmg               # Imágenes macOS
+*.deb               # Paquetes Debian
 
-# Environment
-.env
-.DS_Store
+### PostgreSQL ###
+*.pid               # Archivos PID de PostgreSQL
+*.dump              # Backups de base de datos
+pgdata/             # Datos locales de PostgreSQL 
+
+### Desarrollo ###
+.vscode/            # Configuración de VS Code
+.idea/              # Configuración de JetBrains IDE
+*.suo               # Archivos de usuario de VS
+*.ntvs*             # Archivos de Node Tools
+*.njsproj           # Proyectos Node.js
+*.sln               # Soluciones Visual Studio
+
+### Logs ###
+npm-debug.log*      # Logs de NPM
+yarn-debug.log*     # Logs de Yarn
+yarn-error.log*     # Errores de Yarn
+*.log               # Logs de aplicación
+logs/               # Directorio de logs
+
+### Testing ###
+coverage/           # Reportes de cobertura
+.nyc_output/        # Salida de NYC
+
+### Sistema ###
+*.swp               # Archivos swap de Vim
+*.swo               # Archivos swap de Vim
+~$*                 # Archivos temporales de Office
+
+### Frontend ###
+.cache/
+.parcel-cache/
