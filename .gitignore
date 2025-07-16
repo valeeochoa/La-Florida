@@ -50,4 +50,4 @@ coverage/           # Reportes de cobertura
 
 ### Frontend ###
 .cache/
-.parcel-cache/
+.parcel-cache/node_modules/
