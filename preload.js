@@ -4,7 +4,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
   obtenerAlumnos: () => ipcRenderer.invoke('obtenerAlumnos'),
   buscarAlumnoPorDNI: (dni) => ipcRenderer.invoke('buscarAlumnoPorDNI', dni),
   buscarParticularPorDNI: (dni) => ipcRenderer.invoke('buscarParticularPorDNI', dni),
-  buscarVehiculoPorPatente: (patente) => ipcRenderer.invoke('buscarVehiculoPorPatente', patente)
+  buscarVehiculoPorPatente: (patente) => ipcRenderer.invoke('buscarVehiculoPorPatente', patente),
+  obtenerMovimientosPorDNI: (dni) => ipcRenderer.invoke('obtenerMovimientosPorDNI', dni),
+  registrarMovimiento: (movimiento) => ipcRenderer.invoke('registrarMovimiento', movimiento)
 });
 
 console.log('API Electron configurada');

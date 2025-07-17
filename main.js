@@ -144,25 +144,14 @@ ipcMain.handle('buscarVehiculoPorPatente', async (event, patente) => {
   }
 });
 
-ipcMain.handle('registrar-movimiento', async (event, { tipo, dni }) => { // ✅ Desestructuración
-  const hoy = new Date();
-  const dia = hoy.getDate();
-  
-  if (![19, 20, 21].includes(dia)) {
-    throw new Error('Solo se permiten movimientos los días 19, 20 o 21 del mes');
-  }
-
-  if (!['Ingreso', 'Egreso'].includes(tipo)) {
-    throw new Error('Tipo de movimiento inválido');
-  }
-
+ipcMain.handle('registrarMovimiento', async (event, movimiento) => {
   try {
     const { rows } = await db.query(
       `INSERT INTO Movimiento 
-       (fecha, hora, tipo, dni_persona)
-       VALUES (CURRENT_DATE, CURRENT_TIME, $1, $2)
+       (M_Fecha, M_Hora, M_Tipo, P_Dni_Realizo)
+       VALUES ($1, $2, $3, $4)
        RETURNING *`,
-      [tipo, dni]
+      [movimiento.fecha, movimiento.hora, movimiento.tipo, movimiento.dni]
     );
     return rows[0];
   } catch (error) {
@@ -170,8 +159,23 @@ ipcMain.handle('registrar-movimiento', async (event, { tipo, dni }) => { // ✅ 
     throw error;
   }
 });
-}
 
+ipcMain.handle('obtenerMovimientosPorDNI', async (event, dni) => {
+  try {
+    const { rows } = await db.query(
+      `SELECT * FROM Movimiento 
+       WHERE P_Dni_Realizo = $1
+       ORDER BY M_Fecha DESC, M_Hora DESC`,
+      [dni]
+    );
+    return rows;
+  } catch (error) {
+    console.error(`Error obteniendo movimientos para DNI ${dni}:`, error);
+    throw new Error('Error al obtener movimientos');
+  }
+});
+
+}
 // Cierre de la aplicación
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();

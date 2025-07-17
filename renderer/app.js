@@ -124,8 +124,8 @@ function mostrarResultados(data, tipo) {
   container.style.display = 'block';
   const contentDiv = container.querySelector('#resultContent') || document.createElement('div');
   contentDiv.id = 'resultContent';
+  contentDiv.innerHTML = '';
 
-  // Limpiar y validar datos
   if (!data?.length) {
     contentDiv.innerHTML = '<p class="no-results">No se encontraron resultados</p>';
     container.appendChild(contentDiv);
@@ -135,7 +135,7 @@ function mostrarResultados(data, tipo) {
   const item = data[0];
   let html = '';
 
-  // Plantillas mejoradas
+  // Plantilla con botones de movimiento
   const templates = {
     Alumno: `
       <div class="persona-card">
@@ -144,12 +144,70 @@ function mostrarResultados(data, tipo) {
           <p><strong>DNI:</strong> ${formatDNI(item.p_dni)}</p>
           <p><strong>Carrera:</strong> ${escapeHtml(item.a_carrera)}</p>
           <p><strong>Fecha Nacimiento:</strong> ${formatDate(item.a_fecnac)}</p>
+          <p><strong>Tipo:</strong> Alumno</p>
         </div>
+        <div class="movimientos-actions">
+        <button id="btnIngreso" class="action-btn ingreso">Registrar Ingreso</button>
+          <button id="btnEgreso" class="action-btn egreso">Registrar Egreso</button>
+        </div>
+        <div id="movimientosList" class="movimientos-list"></div>
       </div>
     `,
-    Particular: `...`, // Similar al alumno
-    Vehículo: `...`    // Similar al alumno
+    Particular: `<div class="persona-card">
+        <h3>${escapeHtml(item.p_nombre)} ${escapeHtml(item.p_apellido)}</h3>
+        <div class="details">
+          <p><strong>DNI:</strong> ${formatDNI(item.p_dni)}</p>
+          <p><strong>Día de Ingreso:</strong> ${escapeHtml(item.p_diaingreso)}</p>
+          <p><strong>Tipo:</strong> Particular</p>
+          ${calcularTarifa(item.p_diaingreso)}
+        </div>
+        <div class="movimientos-actions">
+          <button id="btnIngreso" class="action-btn ingreso">Registrar Ingreso</button>
+          <button id="btnEgreso" class="action-btn egreso">Registrar Egreso</button>
+        </div>
+        <div id="movimientosList" class="movimientos-list"></div>
+      </div>
+    `, 
+    Vehiculo: `<div class="vehiculo-card">
+        <h3>Vehículo ${escapeHtml(item.v_patente)}</h3>
+        <div class="details">
+          <p><strong>Tipo:</strong> ${escapeHtml(item.v_tipo)}</p>
+          <p><strong>Tarifa Vehículo:</strong> ${calcularTarifaVehiculo(item.v_tipo)}</p>
+          <p><strong>Responsable:</strong> ${escapeHtml(item.p_nombre)} ${escapeHtml(item.p_apellido)}</p>
+          <p><strong>DNI Responsable:</strong> ${formatDNI(item.p_dni_responsable)}</p>
+        </div>
+        <div class="movimientos-actions">
+          <button id="btnIngreso" class="action-btn ingreso">Registrar Ingreso</button>
+          <button id="btnEgreso" class="action-btn egreso">Registrar Egreso</button>
+        </div>
+        <div id="movimientosList" class="movimientos-list"></div>
+      </div>
+      `    
   };
+
+  // Función auxiliar para calcular tarifa de particular
+function calcularTarifa(diaIngreso) {
+    let tarifa = 0;
+    switch(diaIngreso) {
+        case 'Viernes': tarifa = 3000; break;
+        case 'Sabado': tarifa = 2000; break;
+        case 'Domingo': tarifa = 1000; break;
+        default: tarifa = 0;
+    }
+    return `<p><strong>Tarifa a pagar:</strong> $${tarifa}</p>`;
+}
+// Función auxiliar para calcular tarifa de vehículo
+function calcularTarifaVehiculo(tipoVehiculo) {
+    let tarifa = 0;
+    switch(tipoVehiculo) {
+        case 'Moto': tarifa = 1000; break;
+        case 'Auto':
+        case 'Camioneta': tarifa = 2000; break;
+        case 'Motorhome': tarifa = 3000; break;
+        default: tarifa = 0;
+    }
+    return `$${tarifa}`;
+}
 
   if (!templates[tipo]) {
     console.error('Tipo de resultado no válido:', tipo);
@@ -158,8 +216,50 @@ function mostrarResultados(data, tipo) {
 
   contentDiv.innerHTML = templates[tipo];
   container.appendChild(contentDiv);
+
+  if (tipo === 'Alumno' || tipo === 'Particular' || tipo === 'Vehiculo') {
+  document.getElementById('btnIngreso').addEventListener('click', () => {
+    registrarMovimiento(item, 'Ingreso');
+  });
+  
+  document.getElementById('btnEgreso').addEventListener('click', () => {
+    registrarMovimiento(item, 'Egreso');
+  });
+  
+  cargarMovimientos(item.p_dni || item.p_dni_responsable);
+}
 }
 
+async function registrarMovimiento(persona, tipo) {
+  try {
+    /* Validar fechas permitidas (19, 20 o 21)
+    const hoy = new Date();
+    const dia = hoy.getDate();
+    
+    if (dia < 19 || dia > 21) {
+      mostrarMensaje('Solo se permiten movimientos los días 19, 20 y 21', 'error');
+      return;
+    }
+*/
+    const hoy = new Date();
+
+    const movimiento = {
+      fecha: hoy.toISOString().split('T')[0],
+      hora: hoy.toTimeString().split(' ')[0],
+      tipo: tipo,
+      dni: persona.p_dni || persona.p_dni_responsable
+    };
+
+    const resultado = await window.electronAPI.registrarMovimiento(movimiento);
+    if (resultado) {
+      mostrarMensaje(`Movimiento de ${tipo} registrado correctamente`, 'success');
+      cargarMovimientos(movimiento.dni);
+    }
+  } catch (error) {
+    console.error('Error al registrar movimiento:', error);
+    mostrarMensaje(`Error al registrar movimiento: ${error.message}`, 'error');
+  }
+}
 // Funciones auxiliares de formato
 function formatDNI(dni) {
     if (!dni) return 'N/A';
@@ -285,7 +385,30 @@ async function cargarDatosIniciales() {
         mostrarMensaje('Error al cargar datos iniciales', 'error');
     }
 }
+async function cargarMovimientos(dni) {
+  try {
+    const movimientos = await window.electronAPI.obtenerMovimientosPorDNI(dni);
+    const movimientosList = document.getElementById('movimientosList');
+    
+    if (!movimientos?.length) {
+      movimientosList.innerHTML = '<p>No hay movimientos registrados</p>';
+      return;
+    }
 
+    let html = '<h4>Últimos movimientos:</h4><ul>';
+    movimientos.forEach(mov => {
+      html += `
+        <li>
+          ${mov.m_tipo} - ${formatDate(mov.m_fecha)} ${mov.m_hora}
+        </li>
+      `;
+    });
+    html += '</ul>';
+    movimientosList.innerHTML = html;
+  } catch (error) {
+    console.error('Error al cargar movimientos:', error);
+  }
+}
 function cargarContenidoPestana(pestana) {
   console.log(`Cambiando a pestaña: ${pestana}`);
   // Implementación básica (debes adaptarla)

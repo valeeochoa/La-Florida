@@ -203,6 +203,35 @@ header h2 {
   cursor: pointer;
 }
 
+.movimientos-actions {
+  margin: 15px 0;
+  display: flex;
+  gap: 10px;
+}
+
+.action-btn {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.ingreso {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.egreso {
+  background-color: #f44336;
+  color: white;
+}
+
+.movimientos-list {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+}
 /* Efectos y transiciones */
 .tab:hover, .option:hover {
   transform: translateY(-1px);
@@ -230,6 +259,7 @@ header h2 {
     width: 100%;
   }
 }
+
 /*body {
   font-family: 'Arial', sans-serif;
   margin: 0;
